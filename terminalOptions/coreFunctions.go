@@ -172,7 +172,6 @@ func SetCsvPath(oldCsvPath string, oldCompanies []global.Company) (csvPath strin
 		// Add the company to the list
 		companies = append(companies, company)
 	}
-
 	return newCsvPath, companies
 }
 

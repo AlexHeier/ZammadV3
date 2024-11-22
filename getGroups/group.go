@@ -8,12 +8,12 @@ import (
 	"net/http"
 )
 
-var zammadGroupURL string = "https://zammad.login.no/api/v1/groups"
+var zammadGroupEndpoint string = "/api/v1/groups"
 
 func GetGroup() []global.Group {
 	// Create HTTP client and request
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", zammadGroupURL, nil)
+	req, err := http.NewRequest("GET", global.ZammadBaseURL+zammadGroupEndpoint, nil)
 	if err != nil {
 		log.Fatalf("Error creating request: %v", err)
 	}

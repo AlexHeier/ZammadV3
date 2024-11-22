@@ -1,6 +1,7 @@
 package terminaloptions
 
 import (
+	createticket "ZammadV3/createTicket"
 	"ZammadV3/global"
 	"bufio"
 	"fmt"
@@ -44,7 +45,17 @@ func Terminaloptions(groups []global.Group, users []global.User) {
 		case "5":
 			mailCustomerPath, companies = SetCsvPath(mailCustomerPath, companies)
 		case "s":
-			// send
+			success, amount := createticket.CereateTicket(mailTitle, mailText, mailGroup, mailOwner, companies)
+
+			if success {
+				fmt.Printf("\nSendt %d emails...\nEnter to exit: ", len(companies))
+				reader.ReadString('\n')
+				os.Exit(0)
+			} else {
+				fmt.Printf("\nSomething went wrong. Could not finnish sending emails.\nSendt %d out of %d", amount, len(companies))
+				fmt.Printf("\n\nEnter to continue: ")
+				reader.ReadString('\n')
+			}
 		case "q":
 			global.ClearScreen()
 			fmt.Print("\nTakk for at du brukte Zammad V3 :)\n\n")

@@ -10,7 +10,7 @@ import (
 )
 
 // Base URL for Zammad users API
-var zammadUserURL string = "https://zammad.login.no/api/v1/users"
+var zammadUserEndpoint string = "/api/v1/users"
 
 // GetAllUsers retrieves all users, handling pagination
 func GetUsers() []global.User {
@@ -21,7 +21,7 @@ func GetUsers() []global.User {
 
 	for {
 		// Construct the paginated URL
-		url := fmt.Sprintf("%s?page=%d&per_page=%d", zammadUserURL, page, perPage)
+		url := fmt.Sprintf("%s?page=%d&per_page=%d", global.ZammadBaseURL+zammadUserEndpoint, page, perPage)
 
 		// Create HTTP client and request
 		client := &http.Client{}

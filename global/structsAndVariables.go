@@ -1,6 +1,7 @@
 package global
 
 var ZAMMAD_TOKEN string
+var ZammadBaseURL string = "https://zammad.login.no"
 
 type Group struct {
 	ID   int    `json:"id"`
