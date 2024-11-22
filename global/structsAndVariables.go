@@ -13,3 +13,8 @@ type User struct {
 	Lastname   string `json:"lastname"`
 	Department string `json:"department"` // må bruke contains når jeg skal hente ut
 }
+
+type Company struct {
+	Emails string
+	CC     []string
+}

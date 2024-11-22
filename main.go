@@ -4,6 +4,7 @@ import (
 	getgroups "ZammadV3/getGroups"
 	getusers "ZammadV3/getUsers"
 	"ZammadV3/global"
+	terminaloptions "ZammadV3/terminalOptions"
 	"log"
 	"os"
 
@@ -25,7 +26,11 @@ func init() {
 }
 
 func main() {
-	_ = getgroups.GetGroup()
-	_ = getusers.GetUsers()
-	global.ClearScreen()
+	global.IsLoading = true
+	go global.LoadingScreen()
+	groups := getgroups.GetGroup()
+	users := getusers.GetUsers()
+	global.IsLoading = false
+	terminaloptions.Terminaloptions(groups, users)
+
 }
