@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 // Base URL for Zammad users API
@@ -31,7 +32,7 @@ func GetUsers() []global.User {
 		}
 
 		// Add authorization header
-		req.Header.Add("Authorization", "Bearer "+global.ZAMMAD_TOKEN)
+		req.Header.Add("Authorization", "Bearer "+os.Getenv("ZAMMMAD_TOKEN"))
 
 		// Send the request
 		resp, err := client.Do(req)

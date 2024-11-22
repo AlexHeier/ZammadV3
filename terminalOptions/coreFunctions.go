@@ -205,6 +205,7 @@ func SetEmailGroup(oldMailGroup global.Group, groups []global.Group) (newMailGro
 		}
 
 		newMailGroup = groups[number-1]
+		break
 
 	}
 	if oldMailGroup == newMailGroup {
@@ -217,15 +218,11 @@ func SetMailOwner(currentMailOwners, users []global.User, mailGroup global.Group
 	var groupUser []global.User
 	reader := bufio.NewReader(os.Stdin)
 
-	global.IsLoading = true
-	go global.LoadingScreen()
-
 	for _, user := range users {
 		if strings.Contains(strings.ToLower(user.Department), strings.ToLower(mailGroup.Name)) {
 			groupUser = append(groupUser, user)
 		}
 	}
-	global.IsLoading = false
 
 	for {
 		global.ClearScreen()
@@ -258,7 +255,7 @@ func SetMailOwner(currentMailOwners, users []global.User, mailGroup global.Group
 				for i, user := range avalibleUsers {
 					fmt.Printf("\n%v) %s %s", i+1, user.Firstname, user.Lastname)
 				}
-				fmt.Print("\n\nChoise: ")
+				fmt.Print("\n\nChoice: ")
 				choice, _ := reader.ReadString('\n')
 				choice = strings.TrimSpace(choice)
 				choice = strings.ToLower(choice)

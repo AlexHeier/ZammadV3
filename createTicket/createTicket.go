@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -22,27 +23,27 @@ func CereateTicket(mailTitle string, mailText []string, mailGroup global.Group, 
 		fmt.Printf("\r(%d/%d)", i+1, len(companies))
 
 		owner := mailOwner[i%len(mailOwner)]
+		//customer := fmt.Sprintf("guess:%s", comcompny.Emails)
 
-		data := map[string]interface{}{
-			"title":       mailTitle,
-			"group_id":    mailGroup.ID,
-			"customer_id": owner.ID,
+		payload := map[string]interface{}{
+			"title":    mailTitle,
+			"group_id": mailGroup.ID,
+			"customer": comcompny.Emails,
+			"owner_id": owner.ID,
 			"article": map[string]interface{}{
 				"subject":      mailTitle,
 				"body":         emailContent,
 				"type":         "email",
 				"content_type": "text/html",
 				"to":           comcompny.Emails,
-				"from":         mailGroup.Name,
-				"sender_id":    1,
-				"type_id":      1,
+				"from":         owner.Email,
+				"sender":       "System",
 			},
-			"priority_id": 2,
-			"state_id":    1,
-			"due_at":      "2024-09-30T12:00:00Z",
 		}
 
-		jsonData, err := json.Marshal(data)
+		fmt.Print(payload)
+
+		jsonData, err := json.Marshal(payload)
 		if err != nil {
 			fmt.Printf("Error encoding JSON: %v\n", err)
 			return false, i
@@ -55,7 +56,7 @@ func CereateTicket(mailTitle string, mailText []string, mailGroup global.Group, 
 		}
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", "Bearer "+global.ZAMMAD_TOKEN) // dette er 100% den tryggeste måten og ikke latskap
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("ZAMMMAD_TOKEN"))
 
 		client := &http.Client{}
 		resp, err := client.Do(req)

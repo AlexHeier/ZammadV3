@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -31,13 +32,18 @@ func Terminaloptions(groups []global.Group, users []global.User) {
 		}
 		switch answer {
 		case "1":
-			mailOwner = SetMailOwner(mailOwner, users, mailGroup)
-		case "2":
 			change := false
 			mailGroup, change = SetEmailGroup(mailGroup, groups)
 			if change {
 				mailOwner = nil
 			}
+		case "2":
+			if mailGroup.Name == "" {
+				fmt.Print("\nYou need to set a group first")
+				reader.ReadString('\n')
+				break
+			}
+			mailOwner = SetMailOwner(mailOwner, users, mailGroup)
 		case "3":
 			mailTitle = SetEmailTitle(mailTitle)
 		case "4":
@@ -50,7 +56,6 @@ func Terminaloptions(groups []global.Group, users []global.User) {
 			if success {
 				fmt.Printf("\nSendt %d emails...\nEnter to exit: ", len(companies))
 				reader.ReadString('\n')
-				os.Exit(0)
 			} else {
 				fmt.Printf("\nSomething went wrong. Could not finnish sending emails.\nSendt %d out of %d", amount, len(companies))
 				fmt.Printf("\n\nEnter to continue: ")
@@ -69,10 +74,10 @@ func Terminaloptions(groups []global.Group, users []global.User) {
 
 func emailOptions(mailGroup, mailTitle string, companies []global.Company, mailOwner []global.User, hasText bool) {
 	global.ClearScreen()
-	fmt.Printf("\n1) Set email owner(s). Has to have group first. Current:    %v", len(mailOwner))
-	fmt.Printf("\n2) Set email group. Current:                                %s", defaultIfENotSet(mailGroup))
+	fmt.Printf("\n1) Set email group. Current:                                %s", defaultIfENotSet(mailGroup))
+	fmt.Printf("\n2) Set email owner(s). Has to have group first. Count:      %v", len(mailOwner))
 	fmt.Printf("\n3) Set email title. Current:                                %s", defaultIfENotSet(mailTitle))
-	fmt.Printf("\n4) Set email content or path. Have:                         %s", boolTrueFalseString(hasText))
+	fmt.Printf("\n4) Set email content or path. Have:                         %s", strconv.FormatBool(hasText))
 	fmt.Printf("\n5) Set email customer and CC file path. Current emails:     %v", len(companies))
 	fmt.Printf("\nS) to send the mail(s)")
 	fmt.Printf("\nQ) to quit the program")
@@ -86,11 +91,4 @@ func defaultIfENotSet(s string) string {
 		return "Not Set"
 	}
 	return s
-}
-
-func boolTrueFalseString(b bool) string {
-	if b {
-		return "True"
-	}
-	return "False"
 }

@@ -6,7 +6,6 @@ import (
 	"ZammadV3/global"
 	terminaloptions "ZammadV3/terminalOptions"
 	"log"
-	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -17,11 +16,6 @@ func init() {
 	envErr := godotenv.Load()
 	if envErr != nil {
 		log.Fatalf("Error loading .env file: %v", envErr)
-	}
-
-	global.ZAMMAD_TOKEN = os.Getenv("ZAMMMAD_TOKEN")
-	if global.ZAMMAD_TOKEN == "" {
-		log.Fatal("ZAMMAD_TOKEN is not set in the .env file")
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 var zammadGroupEndpoint string = "/api/v1/groups"
@@ -19,7 +20,7 @@ func GetGroup() []global.Group {
 	}
 
 	// Add authorization header
-	req.Header.Add("Authorization", "Bearer "+global.ZAMMAD_TOKEN)
+	req.Header.Add("Authorization", "Bearer "+os.Getenv("ZAMMMAD_TOKEN"))
 
 	// Send the request
 	resp, err := client.Do(req)
